@@ -1,0 +1,12 @@
+{
+  "name": "take-a-walk",
+  "displayName": "take-a-walk",
+  "expo": {
+    "name": "take-a-walk",
+    "slug": "take-a-walk",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
