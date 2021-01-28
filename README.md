@@ -1,4 +1,4 @@
-# Talk-A-Walk
+# Take-A-Walk
 
 Mobile app for CS 125
 
