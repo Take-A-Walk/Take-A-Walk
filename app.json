@@ -7,6 +7,12 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "ios":{
+      "bundleIdentifier": "com.takeawalk",
+      "config":{
+        "googleMapsApiKey" : "AIzaSyB0Ckjw0mGcuaUHHTIyx6FW_zqygm-ZIBM"
+      }
+    }
   }
 }
