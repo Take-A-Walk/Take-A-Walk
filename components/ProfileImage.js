@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import GLOBAL from '../global.js'
+
 import { Avatar } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -33,6 +35,7 @@ export default function ProfileImage() {
     
         if (!result.cancelled) {
           setAvatar(result.uri);
+          GLOBAL.profileImage = result.url;
         }
       };
     

@@ -27,27 +27,28 @@ export default function Homepage({navigation}) {
         }
     }
 
-    const [steps, setSteps] = useState(1234);
-
     const test_hikes = {
         hikes: [
         {
             name: "Mason Park",
             miles: 3.5,
-            terrain: "👟 flat",
+            terrain: "flat",
             difficulty: "easy",
+            modes: "👟🚲🛴",
         },
         {
             name: "Black Star Canyon",
             miles: 5,
-            terrain: "🥾 uphill",
+            terrain: "uphill",
             difficulty: "hard",
+            modes: "🥾🚲",
         },
         {
             name: "Round the block",
             miles: 1.5,
-            terrain: "🥾 hilly",
+            terrain: "hilly",
             difficulty: "medium",
+            modes: "👟🚲",
         },
         ]
     }
@@ -55,12 +56,13 @@ export default function Homepage({navigation}) {
     return (
     <ThemeProvider theme={theme}>
         <ScrollView className="container">
-            <Card>
-                <Text h1>Welcome</Text>
+            <Card containerStyle={{alignItems: "center"}}>
+                <Text h1>Irvine, CA</Text>
                 <Text h4 style={{color: 'lightgray', fontWeight: '200'}}>{new Date().toDateString()}</Text>
                 <StepsDisplay steps={33} goal={100}/>
+                <Text/>
                 <Button
-                    onPress={() => navigation.navigate('Map')}
+                    onPress={() => navigation.navigate('Profile')}
                     title="View Profile"
                     color="#841584"
                     accessibilityLabel="View your personal details"
@@ -76,6 +78,7 @@ export default function Homepage({navigation}) {
                         miles={hike.miles}
                         terrain={hike.terrain}
                         difficulty={hike.difficulty}
+                        modes={hike.modes}
                     />
                 )}
             </Card>

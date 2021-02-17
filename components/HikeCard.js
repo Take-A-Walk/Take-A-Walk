@@ -6,7 +6,7 @@
 
 import React, {useState} from 'react';
 import { StyleSheet, View, Pressable} from 'react-native';
-import { Text, Button, BottomSheet } from 'react-native-elements';
+import { Card, Icon, Text, Button, BottomSheet } from 'react-native-elements';
 
 const styles = StyleSheet.create({
     container: {
@@ -37,7 +37,8 @@ const diffColor = {
 
 export default function HikeCard(props) {
 
-    const { name, miles, terrain, difficulty } = props;
+    console.log(props);
+    const { navigation, name, miles, terrain, difficulty, modes } = props;
     const [timesPressed, setTimesPressed] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
 
@@ -57,21 +58,37 @@ export default function HikeCard(props) {
             {/* The name and stuff */}
             <View style={{flex: 3, flexDirection: "column"}}>
                 <View style={{flex: 1, padding: 8}}>
-                    <Text h4>{name} - {timesPressed}</Text>
+                    <Text h4>{name}</Text>
                 </View>
                 <View style={{flex: 1, padding: 8}}>
                     <Text style={{fontWeight: '100'}}>
-                        <Text style={{backgroundColor: diffColor[difficulty]}}> {difficulty.toUpperCase()} </Text> {terrain}
+                        <Text style={{backgroundColor: diffColor[difficulty]}}> {difficulty.toUpperCase()} </Text> {terrain} - {timesPressed}
                     </Text>
                 </View>
             </View>
 
-            {/* Additional info that pops up when clicked on */}
+            {/* Additional info that pops up when the card is clicked on */}
             <BottomSheet isVisible={isVisible}>
-                <View>
-                    <Text h1> TODO: Link to map</Text>
-                    <Button title="Start Hike?" onPress={() => setIsVisible(false)}></Button>
+                {/* button to close the popup */}
+                <View style={{paddingRight: 16, alignItems: "center"}}>
+                    <Icon reverse size={32} name="close" type='evilicon' color="white" reverseColor="black" onPress={()=>setIsVisible(false)}/>
                 </View>
+                {/* The detail card popup itself */}
+                <Card containerStyle={{marginHorizontal: 0, borderTopLeftRadius: 16, borderTopRightRadius: 16, backgroundColor: "linen"}}>
+                    <Card.Image source={require("../assets/lake.jpg")}></Card.Image>
+                    <Text/> 
+                    <Text h3>{name}</Text>
+                    <Text style={{}}><Text style={{backgroundColor: diffColor[difficulty]}}> {difficulty.toUpperCase()} </Text> {terrain} - {timesPressed} - {modes}</Text>
+                    <Text/> 
+
+                    <Card.Divider/>
+                    <Text>Some more in depth description or details can go here</Text>
+                    <Text/> 
+                    <Button
+                        title="Start Hike"
+                        onPress={() => navigation.navigate('Map')}>
+                    </Button>
+                </Card>
             </BottomSheet>
         </Pressable>
     );

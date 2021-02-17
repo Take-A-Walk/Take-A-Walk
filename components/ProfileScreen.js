@@ -1,18 +1,13 @@
-import React, {useState} from 'react';
-import { Avatar } from 'react-native-elements';
+import React from 'react';
+import { Avatar, Card } from 'react-native-elements';
+import ProfileImage from './ProfileImage';
 
 export default function ProfileScreen() {
 
-    const [avatar, setAvatar] = useState();
     
     return(
-        <Avatar
-        size="xlarge"
-        rounded
-        icon={{name: 'user', type: 'font-awesome'}}
-        source={avatar && {uri: avatar}}
-        // onPress={pickImage}
-        containerStyle={{marginVertical: 60, marginHorizontal: 66, backgroundColor: 'grey',}}
-        />
+        <Card>
+            <ProfileImage />
+        </Card>
     );
 }
