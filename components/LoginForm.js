@@ -16,16 +16,28 @@ const LoginForm = () => {
     })
 
     const onButtonPress = () => {
-        console.log('here');
-
+        console.log("In onButtonPress");
         firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(onLoginSuccess)
             .catch(() => {
                 firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .then(onLoginSuccess)
                     .catch(() => {
-                        setError('Authetnication Failed');
+                        onLoginFail();
                     });
             });
     }
+
+    const onLoginFail = () => {
+        setError('Authentication Failed');
+        setLoading(false);
+    };
+
+    const onLoginSuccess = () => {
+        setEmail('');
+        setPassword('');
+        setLoading(false);
+    };
 
     // render spinner or button
     const renderBtn = () => {
@@ -91,8 +103,7 @@ const styles = {
         alignItems: 'center'
     },
     titleText: {
-        fontSize: 60,
-        justifySelf: 'center'
+        fontSize: 60
     }
 }
 

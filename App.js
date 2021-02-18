@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import GLOBAL from './global.js'
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -18,7 +18,8 @@ require
 const Stack = createStackNavigator();
 
 export default function App() {
-    
+    const [loggedIn, setLoggedIn] = useState(false);
+
     useEffect(() => {
         // create reference - dbRefObj points at the location object
         const dbRefObj = firebase.database().ref().child('users');
@@ -35,31 +36,52 @@ export default function App() {
         //     })
 
         // console.log(dbRefObj);
+
+        // set persistence to none
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+
+        // eventhandler for signing in or signing out
+        firebase.auth().onAuthStateChanged((user) => {
+            console.log(user);
+            // based on the 'user' argument
+            if (user) {
+                console.log('user logged in');
+                setLoggedIn(true);
+            } else {
+                console.log('user not logged in');
+                setLoggedIn(false);
+            }
+        });
     }, [])
 
     return (
     <SafeAreaProvider>
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen
-                name="Login"
-                component={LoginForm}
-                options={{ title: 'Login' }}
-                />
-                <Stack.Screen
-                name="Home"
-                component={Homepage}
-                options={{ title: 'Dashboard' }}
-                />
-                <Stack.Screen
-                name="Profile"
-                component={ProfileScreen}
-                options={{ title: 'Profile' }}
-                />
-                <Stack.Screen
-                name="Map"
-                component={MapScreen}
-                />
+                {loggedIn == false ? (
+                    <Stack.Screen
+                    name="Login"
+                    component={LoginForm}
+                    options={{ title: 'Login' }}
+                    />
+                ) : (
+                    <>
+                        <Stack.Screen
+                        name="Home"
+                        component={Homepage}
+                        options={{ title: 'Dashboard' }}
+                        />
+                        <Stack.Screen
+                        name="Profile"
+                        component={ProfileScreen}
+                        options={{ title: 'Profile' }}
+                        />
+                        <Stack.Screen
+                        name="Map"
+                        component={MapScreen}
+                        />
+                    </>
+                )}
             </Stack.Navigator>
         </NavigationContainer>
     </SafeAreaProvider>
