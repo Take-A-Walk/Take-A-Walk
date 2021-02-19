@@ -13,27 +13,28 @@ export default function MapDisplay() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [placeResponse, setPlaceResponse] = useState(null);
 
-  useEffect(() => {
-      (async () => {
-      try {
-          if (Platform.OS !== 'web') {
-              let { status } = await Location.requestPermissionsAsync();
-              if (status !== 'granted') {
-                  //alert('Sorry, we need camera roll permissions to make this work!');
-                  setErrorMsg('Sorry we need your location for the app to work!');
-                  return;
-              }
-              let location = await Location.getCurrentPositionAsync({});
-              setLocation(location);
-              setLatitude(location.coords.latitude);
-              setLongitude(location.coords.longitude);
-
-          }
-      }finally{
-
-      }
-      })();
+    useEffect(() => {
+        getMapData();
     }, []);
+
+    const getMapData = async () => {
+        try {
+            let { status } = await Location.requestPermissionsAsync();
+            if (status !== 'granted') {
+                //alert('Sorry, we need camera roll permissions to make this work!');
+                setErrorMsg('Sorry we need your location for the app to work!');
+                return;
+            }
+            let location = await Location.getCurrentPositionAsync({});
+            console.log(location);
+            setLocation(location);
+            setLatitude(location.coords.latitude);
+            setLongitude(location.coords.longitude);
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
   //this.fetchPlacesAPI(location.coords.latitude, location.coords.longitude);
   /*
   fetchPlacesAPI = (lat, long) => {
@@ -78,30 +79,43 @@ export default function MapDisplay() {
       lat = latitude;
       long = longitude;
   }
-  showMap = (lat, long) =>{
-    return(
-      <MapView 
-      provider = {PROVIDER_GOOGLE}
-      style = {styles.map} 
-      region = {{
-        latitude:  lat,
-      longitude: long,
-      latitudeDelta: 0.09,
-      longitudeDelta: 0.035
-    }}
-    showsUserLocation = {true}>
-      <MapView.Marker
-        coordinate={{latitude: 37.78825,
-        longitude: -110.342}}
-        title={"title"}
-        description={"description"}
-     />
-    </MapView>);
 
+
+    showMap = (lat, long) =>{
+        // if at least one of 'lat' or 'long' doesn't exist (both must exist to render)
+        if (!lat || !long) {
+            return (
+                <Text>Please add Location</Text>
+            )
+        } else {
+            return(
+                <MapView 
+                    provider = {PROVIDER_GOOGLE}
+                    style = {styles.map} 
+                    region = {{
+                        latitude:  lat,
+                        longitude: long,
+                        latitudeDelta: 0.09,
+                        longitudeDelta: 0.035
+                    }}
+                    showsUserLocation = {true}>
+                <MapView.Marker
+                    coordinate={{
+                        latitude: 37.78825,
+                        longitude: -110.342}}
+                    title={"title"}
+                    description={"description"}
+                />
+                </MapView>
+            );
+        }
   }
+
   return(
-    <View>
-        {this.showMap(lat, long)}
+      <View>
+        {/* {showMap(0, 0)} */}
+        {showMap(lat, long)}
+        {/* {this.showMap(lat, long)} */}
       </View>
   );
 }
