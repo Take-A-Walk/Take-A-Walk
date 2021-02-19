@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import GLOBAL from '../global.js'
 
@@ -13,9 +14,9 @@ export default function ProfileImage() {
         try {
             if (Platform.OS !== 'web') {
                 const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-                if (status !== 'granted') {
-                    alert('Sorry, we need camera roll permissions to make this work!');
-                }
+                // if (status !== 'granted') {
+                //     alert('Sorry, we need camera roll permissions to make this work!');
+                // }
             }
         }finally{
 
@@ -44,9 +45,14 @@ export default function ProfileImage() {
         size="xlarge"
         rounded
         icon={{name: 'user', type: 'font-awesome'}}
-        source={avatar && {uri: avatar}}
+        // source={avatar && {uri: avatar}}
+        source={{uri: "https://sites.rutgers.edu/acal51/wp-content/uploads/sites/291/2017/12/3859882-6269102771-Bruce.jpg"}}
         onPress={pickImage}
-        containerStyle={{marginVertical: 60, marginHorizontal: 66, backgroundColor: 'grey',}}
+        containerStyle={{
+            marginVertical: 60,
+            marginHorizontal: 100,
+            backgroundColor: 'grey',
+        }}
         />
     );
 }
