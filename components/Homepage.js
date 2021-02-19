@@ -10,7 +10,6 @@ export default function Homepage({navigation}) {
     const theme = {
         Text: {
             style:{
-                fontFamily: 'monospace',
             }
         },
         NOTCard: {
@@ -22,7 +21,6 @@ export default function Homepage({navigation}) {
         },
         Button: {
             titleStyle: {
-                fontFamily: 'monospace',
             },
         }
     }
@@ -81,6 +79,11 @@ export default function Homepage({navigation}) {
                         modes={hike.modes}
                     />
                 )}
+                <Button 
+                    onPress={() =>navigation.navigate('Map')}
+                    title = "View Map"
+                    color = "#841584"
+                />
             </Card>
             <Card>
                 <Card.Title h3>Your History</Card.Title>
