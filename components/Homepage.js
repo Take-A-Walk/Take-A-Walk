@@ -81,6 +81,11 @@ export default function Homepage({navigation}) {
                         modes={hike.modes}
                     />
                 )}
+                <Button 
+                    onPress={() =>navigation.navigate('Map')}
+                    title = "View Map"
+                    color = "#841584"
+                />
             </Card>
             <Card>
                 <Card.Title h3>Your History</Card.Title>

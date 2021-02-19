@@ -63,6 +63,4 @@ buck-out/
 .expo/*
 web-build/
 
-# environment
 fb_config.js
-assets/headshot.JPG
