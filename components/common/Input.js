@@ -4,9 +4,9 @@ import { Text, View, TextInput } from 'react-native';
 const Input = ({ label, value, onChangeText, placeholder, pwObstruct }) => {
     const { inputField, labelStyle, containerStyle } = styles;
 
-    useEffect(() => {
-        console.log('Input rendered!');
-    })
+    // useEffect(() => {
+    //     console.log('Input rendered!');
+    // })
 
     return (
         <View style={containerStyle}>
@@ -30,12 +30,12 @@ const styles = {
         paddingLeft: 20,
         fontSize: 18,
         lineHeight: 23,
-        flex: 3
+        flex: 4
     },
     labelStyle: {
         fontSize: 18,
         paddingLeft: 20,
-        flex: 1
+        flex: 2
     },
     containerStyle: {
         height: 50,

@@ -11,9 +11,9 @@ const LoginForm = () => {
     const [loading, setLoading] = useState(false);
     const {errorStyle, titleView, titleText} = styles;
 
-    useEffect(() => {
-        console.log('rendered!');
-    })
+    // useEffect(() => {
+    //     console.log('rendered!');
+    // })
 
     const onButtonPress = () => {
         console.log("In onButtonPress");

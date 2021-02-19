@@ -23,19 +23,7 @@ export default function App() {
     useEffect(() => {
         // create reference - dbRefObj points at the location object
         const dbRefObj = firebase.database().ref().child('users');
-
-        // sync object changes
-        dbRefObj.on('value', snap => console.log(snap.val()));
-
-        // dbRefObj.get()
-        //     .then((snap) => {
-        //         console.log(snap.val());
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //     })
-
-        // console.log(dbRefObj);
+        // dbRefObj.on('value', snap => console.log(snap.val()));
 
         // set persistence to none
         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
@@ -55,35 +43,35 @@ export default function App() {
     }, [])
 
     return (
-    <SafeAreaProvider>
-        <NavigationContainer>
-            <Stack.Navigator>
-                {loggedIn == false ? (
-                    <Stack.Screen
-                    name="Login"
-                    component={LoginForm}
-                    options={{ title: 'Login' }}
-                    />
-                ) : (
-                    <>
+        <SafeAreaProvider>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    {loggedIn == false ? (
                         <Stack.Screen
-                        name="Home"
-                        component={Homepage}
-                        options={{ title: 'Dashboard' }}
+                        name="Login"
+                        component={LoginForm}
+                        options={{ title: 'Login' }}
                         />
-                        <Stack.Screen
-                        name="Profile"
-                        component={ProfileScreen}
-                        options={{ title: 'Profile' }}
-                        />
-                        <Stack.Screen
-                        name="Map"
-                        component={MapScreen}
-                        />
-                    </>
-                )}
-            </Stack.Navigator>
-        </NavigationContainer>
-    </SafeAreaProvider>
-  );
+                    ) : (
+                        <>
+                            <Stack.Screen
+                            name="Home"
+                            component={Homepage}
+                            options={{ title: 'Dashboard' }}
+                            />
+                            <Stack.Screen
+                            name="Profile"
+                            component={ProfileScreen}
+                            options={{ title: 'Profile' }}
+                            />
+                            <Stack.Screen
+                            name="Map"
+                            component={MapScreen}
+                            />
+                        </>
+                    )}
+                </Stack.Navigator>
+            </NavigationContainer>
+        </SafeAreaProvider>
+    );
 }
