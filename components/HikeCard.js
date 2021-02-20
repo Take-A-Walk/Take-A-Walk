@@ -37,7 +37,7 @@ const diffColor = {
 
 export default function HikeCard(props) {
 
-    console.log(props);
+    // console.log(props);
     const { navigation, name, miles, terrain, difficulty, modes } = props;
     const [timesPressed, setTimesPressed] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
