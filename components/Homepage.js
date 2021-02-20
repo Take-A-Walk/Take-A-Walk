@@ -10,7 +10,7 @@ export default function Homepage({navigation}) {
     const theme = {
         Text: {
             style:{
-                //fontFamily: 'monospace',
+                // fontFamily: 'monospace',
             }
         },
         NOTCard: {
@@ -22,7 +22,7 @@ export default function Homepage({navigation}) {
         },
         Button: {
             titleStyle: {
-                //fontFamily: 'monospace',
+                // fontFamily: 'monospace',
             },
         }
     }
