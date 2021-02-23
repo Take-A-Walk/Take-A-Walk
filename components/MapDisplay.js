@@ -7,16 +7,22 @@ import * as Location from 'expo-location';
 
 export default function MapDisplay() {
   
+
   const [location, setLocation] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [placeResponse, setPlaceResponse] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [loadingPlaces, setLoadingPlaces] = useState(true);
 
+    //For user location
     useEffect(() => {
         getMapData();
+        fetchPlacesAPI();
     }, []);
 
+    //Maybe move this to the front before logging in?
     const getMapData = async () => {
         try {
             let { status } = await Location.requestPermissionsAsync();
@@ -30,14 +36,15 @@ export default function MapDisplay() {
             setLocation(location);
             setLatitude(location.coords.latitude);
             setLongitude(location.coords.longitude);
+            setLoadingUser(false);
         } catch(err) {
             console.log(err);
         }
     }
 
   //this.fetchPlacesAPI(location.coords.latitude, location.coords.longitude);
-  /*
-  fetchPlacesAPI = (lat, long) => {
+  
+  const fetchPlacesAPI = async (lat, long) => {
 
       let radius = 2000;
 
@@ -46,7 +53,6 @@ export default function MapDisplay() {
       fetch(url)
         .then(res => res.json())
         .then(data => {
-          
           let places = [] // hold the places
           for(let googlePlace of data.results){
             let place = {}
@@ -60,12 +66,14 @@ export default function MapDisplay() {
 
             places.push(place)
           }
+          console.log(places);
+          setLoadingPlaces(false);
 
           setPlaceResponse(places);
         })
         .catch(console.error)
   }
-  */
+  
 
   let text = "Waiting...";
   let lat = 0;
@@ -78,10 +86,11 @@ export default function MapDisplay() {
 
       lat = latitude;
       long = longitude;
+      response = placeResponse;
   }
 
 
-    showMap = (lat, long) =>{
+  const showMap = (lat, long) =>{
         // if at least one of 'lat' or 'long' doesn't exist (both must exist to render)
         if (!lat || !long) {
             return (
@@ -110,13 +119,43 @@ export default function MapDisplay() {
             );
         }
   }
+  
+  const showPlacesData = (response) =>{
+    console.log(response);
+    let nearbyCoords = [];
+    if(response !== null){
+      for(let place of response){
+        nearbyCoords.push(<Text>{place.coords.latitude}</Text>)
+      }
+      return (
+        nearbyCoords
+      );
+    }
+    else{
+      return(
+        <Text>OOps</Text>
+      );
+    }
+  }
+  
 
-  return(
+  //Loading everything on the screen
+  if(loadingUser){
+    return(
       <View>
         {/* {showMap(0, 0)} */}
         {showMap(lat, long)}
-        {/* {this.showMap(lat, long)} */}
       </View>
+    );
+  }
+  
+  if(loadingPlaces){
+    return(
+      <Text>Data is loaded.</Text>
+    );
+  }
+  return(
+    <Text>Loading Coords on map!</Text>
   );
 }
 
