@@ -7,26 +7,46 @@ import * as Location from 'expo-location';
 
 export default function MapDisplay() {
   
-  const [location, setLocation] = useState(null);
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [placeResponse, setPlaceResponse] = useState(null);
+    const [location, setLocation] = useState(null);
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [placeResponse, setPlaceResponse] = useState(null);
+    const [parks, setParks] = useState([]);
 
+    // initial render
     useEffect(() => {
+        console.log('first useEffect');
         getMapData();
     }, []);
+
+    // re-renders
+    useEffect(() => {
+        console.log('second useEffect');
+
+        console.log(placeResponse);
+
+        if (!placeResponse) {
+            fetchPlacesAPI(latitude, longitude);
+        }
+        
+        // check if already fetched user's location
+        // if (latitude && longitude) {
+        //     fetchPlacesAPI(latitude, longitude);
+        // }
+    });
 
     const getMapData = async () => {
         try {
             let { status } = await Location.requestPermissionsAsync();
+            // console.log(status)
             if (status !== 'granted') {
                 //alert('Sorry, we need camera roll permissions to make this work!');
                 setErrorMsg('Sorry we need your location for the app to work!');
                 return;
             }
             let location = await Location.getCurrentPositionAsync({});
-            console.log(location);
+            // console.log(location);
             setLocation(location);
             setLatitude(location.coords.latitude);
             setLongitude(location.coords.longitude);
@@ -36,12 +56,12 @@ export default function MapDisplay() {
     }
 
   //this.fetchPlacesAPI(location.coords.latitude, location.coords.longitude);
-  /*
-  fetchPlacesAPI = (lat, long) => {
+  
+  const fetchPlacesAPI = (lat, long) => {
 
       let radius = 2000;
 
-      const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + lat + ',' + long + '&radius=' + radius + '&type=park' + '&key=' + "AIzaSyB0Ckjw0mGcuaUHHTIyx6FW_zqygm-ZIBM"
+      const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + lat + ',' + long + '&radius=' + radius + '&type=park' + '&key=' + "AIzaSyB0Ckjw0mGcuaUHHTIyx6FW_zqygm-ZIBM";
 
       fetch(url)
         .then(res => res.json())
@@ -65,7 +85,6 @@ export default function MapDisplay() {
         })
         .catch(console.error)
   }
-  */
 
   let text = "Waiting...";
   let lat = 0;
@@ -81,12 +100,12 @@ export default function MapDisplay() {
   }
 
 
-    showMap = (lat, long) =>{
+    const showMap = (lat, long) =>{
         // if at least one of 'lat' or 'long' doesn't exist (both must exist to render)
         if (!lat || !long) {
             return (
-                <Text>Please add Location</Text>
-            )
+                <Text>{errorMsg}</Text>
+            );
         } else {
             return(
                 <MapView 
@@ -101,7 +120,7 @@ export default function MapDisplay() {
                     showsUserLocation = {true}>
                 <MapView.Marker
                     coordinate={{
-                        latitude: 37.78825,
+                        latitude: 30.78825,
                         longitude: -110.342}}
                     title={"title"}
                     description={"description"}
