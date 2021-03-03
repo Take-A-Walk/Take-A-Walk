@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { ThemeProvider, Card, Text, Button } from 'react-native-elements';
+import { Pedometer } from 'expo-sensors'
 
 import StepsDisplay from './StepsDisplay';
 import HikeCard from './HikeCard';
@@ -51,7 +52,7 @@ export default function Homepage({navigation}) {
             modes: "👟🚲",
         },
         ]
-    }
+    };
 
     return (
     <ThemeProvider theme={theme}>
@@ -59,7 +60,7 @@ export default function Homepage({navigation}) {
             <Card containerStyle={{alignItems: "center"}}>
                 <Text h1>Irvine, CA</Text>
                 <Text h4 style={{color: 'lightgray', fontWeight: '200'}}>{new Date().toDateString()}</Text>
-                <StepsDisplay steps={33} goal={100}/>
+                <StepsDisplay goal={6000}/>
                 <Text/>
                 <Button
                     onPress={() => navigation.navigate('Profile')}
