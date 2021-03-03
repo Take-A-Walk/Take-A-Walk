@@ -7,14 +7,6 @@ import firebase from '../Firebase';
 
 export default function ProfileScreen() {
     const [user, setUser] = useState([]);
-    // const fetchUser = async () => {
-    //     try {
-    //         const res = await firebaseDB.get('/users.json');
-    //         console.log(res);
-    //     } catch(err) {
-    //         console.log(err);
-    //     }
-    // }
 
     // initial render
     useEffect(() => {
@@ -23,7 +15,6 @@ export default function ProfileScreen() {
         dbRefObj.on('value', snap => {
                 const users = snap.val();
                 setUser(users[2]);
-                // console.log(snap.val())
             }
         );
     }, [])
@@ -40,7 +31,6 @@ export default function ProfileScreen() {
             <CardSection>
                 <Input
                     label={"Name"}
-                    // value={user.length > 0 ? users[2].name : "Joe Smith"}
                     value={user ? user.name : "Joe Smith"}
                     onChangeText={name => setUser({...user, 'name': name})}
                     placeholder={"Name"}
