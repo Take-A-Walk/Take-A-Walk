@@ -13,7 +13,6 @@ import ProfileScreen from './components/ProfileScreen';
 import MapScreen from './components/MapScreen';
 
 import firebase from './Firebase';
-require
 
 const Stack = createStackNavigator();
 
