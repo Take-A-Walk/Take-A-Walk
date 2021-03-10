@@ -1133,6 +1133,26 @@
     xcode "^2.1.0"
     xml2js "^0.4.23"
 
+"@expo/config-plugins@~1.0.13":
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-1.0.20.tgz#b1964daf063d7ce07c3f135aa92ccf1c60cd6e46"
+  integrity sha512-BucZQbi7edu8Pin8zFUNsaQeZAj/8ga7Ei3PKivKZKd5F53DdFU6Yb+ZDyQ0UeOGDi0hZlZWdaBzmQqHEg37TQ==
+  dependencies:
+    "@expo/config-types" "^40.0.0-beta.2"
+    "@expo/configure-splash-screen" "0.3.4"
+    "@expo/image-utils" "0.3.10"
+    "@expo/json-file" "8.2.28-alpha.0"
+    "@expo/plist" "0.0.11"
+    find-up "~5.0.0"
+    fs-extra "9.0.0"
+    getenv "0.7.0"
+    glob "7.1.6"
+    resolve-from "^5.0.0"
+    slash "^3.0.0"
+    slugify "^1.3.4"
+    xcode "^2.1.0"
+    xml2js "^0.4.23"
+
 "@expo/config-types@^40.0.0-beta.2":
   version "40.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-40.0.0-beta.2.tgz#4fea4ef5654d02218b02b0b3772529a9ce5b0471"
@@ -1207,6 +1227,22 @@
     xcode "^3.0.0"
     xml-js "^1.6.11"
 
+"@expo/configure-splash-screen@0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@expo/configure-splash-screen/-/configure-splash-screen-0.3.4.tgz#b91d8f08fd96272bd3d7aaa9b51d6189b932c7cc"
+  integrity sha512-HsukM03X5/EXSucVsLN/oLqyFq/1jAjpADkgU1HLaezFpkr+TOquI6yDwdDp1450kcm891PE/SYJ+mCdPxzDLw==
+  dependencies:
+    color-string "^1.5.3"
+    commander "^5.1.0"
+    core-js "^3.6.5"
+    deep-equal "^2.0.3"
+    fs-extra "^9.0.0"
+    glob "^7.1.6"
+    lodash "^4.17.15"
+    pngjs "^5.0.0"
+    xcode "^3.0.0"
+    xml-js "^1.6.11"
+
 "@expo/dev-server@0.1.54":
   version "0.1.54"
   resolved "https://registry.yarnpkg.com/@expo/dev-server/-/dev-server-0.1.54.tgz#0ca29148f85d59ebcf39a2a186261fe181bd60de"
@@ -1271,6 +1307,16 @@
     fs-extra "9.0.0"
     json5 "^1.0.1"
     lodash "^4.17.19"
+    write-file-atomic "^2.3.0"
+
+"@expo/json-file@8.2.28-alpha.0":
+  version "8.2.28-alpha.0"
+  resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-8.2.28-alpha.0.tgz#0e5280c82a17165be12c6a95cd95ec108c6dfe7b"
+  integrity sha512-cCQdw/Nfw8doXjN3onvUnWkuJjtVxx2iUjSOLMydvgI87YpW3x05uUXOVs4P+77YFVoFS6xbki+fmKK2JSCf8w==
+  dependencies:
+    "@babel/code-frame" "~7.10.4"
+    fs-extra "9.0.0"
+    json5 "^1.0.1"
     write-file-atomic "^2.3.0"
 
 "@expo/metro-config@0.1.54":
@@ -6604,11 +6650,12 @@ expo-secure-store@~9.3.0:
   resolved "https://registry.yarnpkg.com/expo-secure-store/-/expo-secure-store-9.3.0.tgz#b716d5d115cc50a34037d1afef84fe4b8ea0745c"
   integrity sha512-dNhKcoUUn+1kmEfFVxSU7h+YsqODqlExZQJcQgxgeiuCeeDvJWkE10t3jjrO6aNfrdM5i/X2l3oh401EDslWsQ==
 
-expo-sensors@~9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/expo-sensors/-/expo-sensors-9.2.0.tgz#4b0c0f85236c874eb99646114e05bb1bd2172058"
-  integrity sha512-HKRFHev1ZclEbeZKdgbTCSpTu8N9WT8Asw3jckno6cCENjV1P7lSrbBx0HCW6q4cO/DcZ0QGvOjQ/LNNE4bCDQ==
+expo-sensors@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/expo-sensors/-/expo-sensors-10.0.0.tgz#4a323bef50866eec916cb87529a77af8ab96980e"
+  integrity sha512-DvsgGh201RUgRJykUHRcMUWjea2s5jdW7ycB0nC1JdKFK74KQQ6YJngMwSqegVwwKs4pysjf/4QwUa/Zwga14g==
   dependencies:
+    "@expo/config-plugins" "~1.0.13"
     invariant "^2.2.4"
 
 expo-splash-screen@~0.8.0:

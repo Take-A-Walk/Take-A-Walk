@@ -48,8 +48,9 @@ export default class StepsDisplay extends React.Component {
             },
             error => {
                 this.setState({
-                    pastStepCount: 'Could not get stepCount: ' + error,
+                    pastStepCount: 33,
                 });
+                console.error(error);
             }
         );
     };
@@ -65,15 +66,15 @@ export default class StepsDisplay extends React.Component {
             <AnimatedCircularProgress
                 size={180}
                 width={16}
-                fill={this.state.pastStepCount / this.props.goal * 100}
+                fill={this.state.pastStepCount ? this.state.pastStepCount / this.props.goal * 100 : 0}
                 padding={16}
                 tintColor="#00995FFF"
                 backgroundColor="#00995F44">
                 {
                     (fill) => (
                     <>
-                    <Text h2>{this.state.pastStepCount}</Text>
-                    <Text>steps</Text>
+                        <Text h2>{this.state.pastStepCount}</Text>
+                        <Text>steps</Text>
                     </>
                     )
                 }
