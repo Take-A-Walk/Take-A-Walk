@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Card } from 'react-native-elements';
+import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import ProfileImage from './ProfileImage';
 import { Button, CardSection, Input, Spinner } from './common';
 // import firebaseDB from '../apis/firebaseDB';
@@ -7,6 +8,7 @@ import firebase from '../Firebase';
 
 export default function ProfileScreen() {
     const [user, setUser] = useState([]);
+    const cardStyle = {height: 100, backgroundColor: "powderblue"};
 
     // initial render
     useEffect(() => {
@@ -14,19 +16,44 @@ export default function ProfileScreen() {
         const dbRefObj = firebase.database().ref().child('users');
         dbRefObj.on('value', snap => {
                 const users = snap.val();
-                setUser(users[2]);
+                setUser(users[1]);
             }
         );
+        // console.log(dbRefObj.child('1'));
     }, [])
 
     // following renders
     useEffect(() => {
         console.log('following renders');
-        console.log(user);
+        const dbRefObj = firebase.database().ref().child('users/4');
+        console.log(dbRefObj);
+        // dbRefObj.update({
+        //     name: "dunkey",
+        //     age: "21",
+        //     height: 
+        // })
+
+        return function cleanup() {
+            const dbRefObj = firebase.database().ref().child('users');
+            console.log(dbRefObj);
+        };
     })
+
+    const saveProfile = (userName, age, height, dgs) => {
+        const dbRefObj = firebase.database().ref().child('users');
+        console.log(dbRefObj);
+    }
+
+    const styles = StyleSheet.create({
+        button: {
+          alignItems: 'center',
+          backgroundColor: "#ADD8E6",
+          padding: 10,
+        }
+    });
     
     return(
-        <Card>
+        <Card containerStyle={cardStyle}>
             <ProfileImage />
             <CardSection>
                 <Input
@@ -63,6 +90,9 @@ export default function ProfileScreen() {
                     placeholder={"Daily Step Goal"}
                     pwObstruct={false}
                 />
+                <TouchableOpacity style={styles.button} onPress={() => saveProfile(user.name, user.age, user.height, user.DSG)}>
+                    <Text>Save</Text>
+                </TouchableOpacity>
             </CardSection>
         </Card>
     );

@@ -6,61 +6,10 @@ import {Card } from 'react-native-elements';
 import * as Location from 'expo-location';
 import { Marker } from 'react-native-maps';
 
-export default function MapDisplay() {
-  
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [placeResponse, setPlaceResponse] = useState(null);
-
-  useEffect(() => {
-      getMapData();   
-  }, []);
-
-  const getMapData = async () => {
-      try {
-          let { status } = await Location.requestPermissionsAsync();
-          if (status !== 'granted') {
-              //alert('Sorry, we need camera roll permissions to make this work!');
-              setErrorMsg('Sorry we need your location for the app to work!');
-              return;
-          }
-          let location = await Location.getCurrentPositionAsync({});
-          setLocation(location);
-          fetchPlacesAPI();
-      } catch(err) {
-          console.log(err);
-      }
-  }
-
-  fetchPlacesAPI = () => {
-    let radius = 2000;
-    
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + lat + ',' + long + '&radius=' + radius + '&type=park' + '&key=' + "AIzaSyB0Ckjw0mGcuaUHHTIyx6FW_zqygm-ZIBM"
-
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-       setPlaceResponse(data.results);
-      })
-      .catch(console.error)
-      
-  }
-
-  let text = "Waiting...";
-  let lat = 0;
-  let long = 0;
-  if (errorMsg) {
-      text = "ERROR";
-   } 
-  else if (location) {
-
-      lat = location.coords.latitude;
-      long = location.coords.longitude;
-  }
+export default function MapDisplay({location, errorMsg, placeResponse}) {
 
   mapMarkers = () =>{
     if(placeResponse){
-      console.log(placeResponse);
       return placeResponse.map( (place) => {
         return (
           <Marker

@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { ThemeProvider, Card, Text, Button } from 'react-native-elements';
-import { Pedometer } from 'expo-sensors'
+import { Pedometer } from 'expo-sensors';
+import * as Location from 'expo-location';
 
 import StepsDisplay from './StepsDisplay';
 import HikeCard from './HikeCard';
+import MapDisplay from './MapDisplay';
 
 export default function Homepage({navigation}) {
-
     const theme = {
         Text: {
             style:{
@@ -27,7 +28,6 @@ export default function Homepage({navigation}) {
             },
         }
     }
-
     const test_hikes = {
         hikes: [
         {
@@ -53,6 +53,57 @@ export default function Homepage({navigation}) {
         },
         ]
     };
+
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [placeResponse, setPlaceResponse] = useState(null);
+
+    const getMapData = async () => {
+        try {
+            let { status } = await Location.requestPermissionsAsync();
+            if (status !== 'granted') {
+                //alert('Sorry, we need camera roll permissions to make this work!');
+                setErrorMsg('Sorry we need your location for the app to work!');
+                return;
+            }
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+            // fetchPlacesAPI();
+        } catch(err) {
+            console.log(err);
+        }
+    }
+    
+    const fetchPlacesAPI = () => {
+        let radius = 2000;
+        const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + location.coords.latitude + ',' + location.coords.longitude + '&radius=' + radius + '&type=park' + '&key=' + "AIzaSyB0Ckjw0mGcuaUHHTIyx6FW_zqygm-ZIBM"
+    
+        fetch(url)
+          .then(res => res.json())
+          .then(data => {
+              console.log('in here');
+            //   console.log(data);
+           setPlaceResponse(data.results);
+          })
+          .catch(console.error)
+    }
+
+    // single render only
+    useEffect(() => {
+        getMapData();
+    }, [])
+
+    // renders whenever
+    useEffect(() => {
+        if (location) {
+            fetchPlacesAPI();
+        }
+    }, [location])
+
+    // always runs
+    useEffect(() => {
+        // console.log(placeResponse);
+    })
 
     return (
     <ThemeProvider theme={theme}>
@@ -83,7 +134,7 @@ export default function Homepage({navigation}) {
                     />
                 )}
                 <Button 
-                    onPress={() =>navigation.navigate('Map')}
+                    onPress={() => navigation.navigate('Map', {location, errorMsg, placeResponse})}
                     title = "View Map"
                     color = "#841584"
                 />
