@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { ThemeProvider, Card, Text, Button } from 'react-native-elements';
-import { Pedometer } from 'expo-sensors';
 import * as Location from 'expo-location';
 
 import StepsDisplay from './StepsDisplay';
