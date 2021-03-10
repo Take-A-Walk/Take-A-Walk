@@ -3,12 +3,14 @@ import { Card, Text } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { View } from 'react-native';
 import { Pedometer } from 'expo-sensors'
+import firebase from '../Firebase';
 
 export default class StepsDisplay extends React.Component {
     state = {
         isPedometerAvailable: 'checking',
         pastStepCount: 0,
         currentStepCount: 0,
+        stepGoal: 0
     };
 
     componentDidMount() {
@@ -53,6 +55,15 @@ export default class StepsDisplay extends React.Component {
                 console.error(error);
             }
         );
+
+        const dbRefObj = firebase.database().ref().child('users');
+        dbRefObj.on('value', snap => {
+                const users = snap.val();
+                this.setState({
+                    stepGoal: users[1].DSG
+                })
+            }
+        );
     };
 
     _unsubscribe = () => {
@@ -66,7 +77,7 @@ export default class StepsDisplay extends React.Component {
             <AnimatedCircularProgress
                 size={180}
                 width={16}
-                fill={this.state.pastStepCount ? this.state.pastStepCount / this.props.goal * 100 : 0}
+                fill={this.state.pastStepCount ? this.state.pastStepCount / this.state.stepGoal * 100 : 0}
                 padding={16}
                 tintColor="#00995FFF"
                 backgroundColor="#00995F44">
