@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Card } from 'react-native-elements';
+import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import ProfileImage from './ProfileImage';
 import { CardSection, Input, Spinner } from './common';
 // import firebaseDB from '../apis/firebaseDB';
@@ -8,6 +9,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default function ProfileScreen() {
     const [user, setUser] = useState([]);
+    const cardStyle = {height: 100, backgroundColor: "powderblue"};
 
     // initial render
     useEffect(() => {
@@ -18,12 +20,24 @@ export default function ProfileScreen() {
                 setUser(users[1]);
             }
         );
+        // console.log(dbRefObj.child('1'));
     }, [])
 
     // following renders
     useEffect(() => {
         console.log('following renders');
-        console.log(user);
+        const dbRefObj = firebase.database().ref().child('users/4');
+        console.log(dbRefObj);
+        // dbRefObj.update({
+        //     name: "dunkey",
+        //     age: "21",
+        //     height: 
+        // })
+
+        return function cleanup() {
+            const dbRefObj = firebase.database().ref().child('users');
+            console.log(dbRefObj);
+        };
     })
 
     function saveProfile(name, age, height, dailyStepGoal) {
