@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { ThemeProvider, Card, Text, Button } from 'react-native-elements';
-import { Pedometer } from 'expo-sensors'
 
 import StepsDisplay from './StepsDisplay';
 import HikeCard from './HikeCard';
