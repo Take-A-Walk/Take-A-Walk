@@ -54,6 +54,18 @@ export default function Homepage({navigation}) {
         ]
     };
 
+    const test_photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATtYBwKZj0eKVLuRBQyZerMA1yMLYhTekENUPPLqnheV4sNsJ8ERJ94-8u-Dregw3MmIxyn5iyeYdlIGR0QFzPhsEVCuxJ102_pIWXdPX8PrVevRnG22m9YVrr-gJ86hF8woTeasSQMdKIfsvO38jQMgwnnF6ktd7pYgMTYPcwd2DJazhlQ6&key=AIzaSyB0Ckjw0mGcuaUHHTIyx6FW_zqygm-ZIBM"
+
+    /**
+     * This function will refresh the current recommendatiosn and create new ones
+     * If no data has changed itll probably just spit out the old ones
+     * 
+     * It will return a json object that looks like test_hikes above
+     */
+    const getRecommendations = () => {
+        
+    }
+    
     return (
     <ThemeProvider theme={theme}>
         <ScrollView className="container">
