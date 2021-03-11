@@ -5,7 +5,6 @@ import ProfileImage from './ProfileImage';
 import { CardSection, Input, Spinner } from './common';
 // import firebaseDB from '../apis/firebaseDB';
 import firebase from '../Firebase';
-import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default function ProfileScreen() {
     const [user, setUser] = useState([]);
