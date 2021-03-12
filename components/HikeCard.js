@@ -4,7 +4,6 @@
  * With maybe a nice picture to further embellish it
  */
 
-import { types } from '@babel/core';
 import React, {useState} from 'react';
 import { StyleSheet, View, Pressable} from 'react-native';
 import { Card, Icon, Text, Button, BottomSheet } from 'react-native-elements';
