@@ -93,7 +93,8 @@ export default function Homepage({navigation}) {
 
             // TODO:
             // Movie magic
-            // do some sorting, or som
+            // do some sorting, or somth
+            
 
             setRecommendations(recs);
         }
@@ -111,7 +112,7 @@ export default function Homepage({navigation}) {
         }
 
         console.log("PLACES TO PROCESS:", places.length);
-        results = [];
+        let results = [];
         for(let place of places){
             let direction_url = 'https://maps.googleapis.com/maps/api/directions/json?' +
                                 'origin=' + location.coords.latitude + ',' + location.coords.longitude + '&' +
