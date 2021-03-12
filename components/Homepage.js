@@ -26,40 +26,16 @@ export default function Homepage({navigation}) {
             },
         }
     }
-    const test_hikes = {
-        hikes: [
-        {
-            name: "Mason Park",
-            miles: 3.5,
-            terrain: "flat",
-            difficulty: "easy",
-            modes: "👟🚲🛴",
-        },
-        {
-            name: "Black Star Canyon",
-            miles: 5,
-            terrain: "uphill",
-            difficulty: "hard",
-            modes: "🥾🚲",
-        },
-        {
-            name: "Round the block",
-            miles: 1.5,
-            terrain: "hilly",
-            difficulty: "medium",
-            modes: "👟🚲",
-        },
-        ]
-    };
-
-    const test_photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATtYBwKZj0eKVLuRBQyZerMA1yMLYhTekENUPPLqnheV4sNsJ8ERJ94-8u-Dregw3MmIxyn5iyeYdlIGR0QFzPhsEVCuxJ102_pIWXdPX8PrVevRnG22m9YVrr-gJ86hF8woTeasSQMdKIfsvO38jQMgwnnF6ktd7pYgMTYPcwd2DJazhlQ6&key=AIzaSyB0Ckjw0mGcuaUHHTIyx6FW_zqygm-ZIBM"
-
     
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [placeResponse, setPlaceResponse] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
+    const [pastWalks, setPastWalks] = useState([]);
 
+    const addFinishedWalk = (finished) => {
+        setPastWalks([...pastWalks, finished]);
+    }
 
     const refreshRecommendations = async () => {
 
@@ -68,8 +44,8 @@ export default function Homepage({navigation}) {
 
         if(placeResponse){
 
-            let hikes = await getDirections(placeResponse.slice(0,3));
-            hikes.forEach(hike => console.log(hike.routes[0].legs[0].end_address, hike.routes[0].legs[0].distance));
+            let hikes = await getDirections(placeResponse.slice(0,5));
+            hikes.forEach(hike => console.log(hike.routes[0].legs[0].end_address));
 
             let recs = [];
             for(let hike of hikes) {
@@ -82,11 +58,11 @@ export default function Homepage({navigation}) {
                     photo_url:  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + 
                                 hike.place.photos[0].photo_reference + 
                                 "&key=AIzaSyB0Ckjw0mGcuaUHHTIyx6FW_zqygm-ZIBM",
-                    open_now:   hike.place.opening_hours.open_now,
+                    open_now:   hike.place.opening_hours ? hike.place.opening_hours.open_now : true,
                     rating:     hike.place.rating,
                     types:      hike.place.types,
                 }
-                // console.log(rec.name, hike.place.types);
+                //console.log(rec.name, hike.place.opening_hours);
                 recs.push(rec);
             }
 
@@ -94,7 +70,7 @@ export default function Homepage({navigation}) {
             // TODO:
             // Movie magic
             // do some sorting, or somth
-            
+
 
             setRecommendations(recs);
         }
@@ -120,7 +96,6 @@ export default function Homepage({navigation}) {
                                 'key=AIzaSyCCq-BUKz97e_bPfZFIv0HL6SNzJImJQwQ&'
                                 'mode=walking';
 
-            console.log("FETCHING URL:", direction_url);
 
             let response = await fetch(direction_url);
             let directions = await response.json();
@@ -207,8 +182,13 @@ export default function Homepage({navigation}) {
                     <HikeCard
                         key={index}
                         hike={hike}
+                        navigation={navigation}
+                        location={location}
+                        errorMsg={errorMsg}
+                        placeResponse={placeResponse}
+                        finishWalkCallback={addFinishedWalk}
                     />
-                ) : <Text style={{height: 100, textAlignVertical: 'center', color: 'grey', fontStyle: 'italic'}}>Loading</Text>}
+                ) : <Text style={{height: 100, textAlignVertical: 'center', textAlign: 'center', color: 'grey', fontStyle: 'italic'}}>Loading</Text>}
                 <Card.Divider/>
                 <Button 
                     onPress={() => navigation.navigate('Map', {location, errorMsg, placeResponse})}
@@ -217,11 +197,12 @@ export default function Homepage({navigation}) {
                 />
             </Card>
             <Card>
-                <Card.Title h3>Your History</Card.Title>
+                <Card.Title h3>Past Walks</Card.Title>
                 <Card.Divider/>
-                <Text>This area will contain cards and stuff detailing the week's activity</Text>
-                <Card.Divider/>
-                <Button title="View Last Walk"></Button>
+                {pastWalks.length > 0 ? 
+                pastWalks.map(walk => <Text> - {walk.date}, {walk.place}</Text>) :
+                    <Text style={{height: 100, textAlignVertical: 'center', textAlign: 'center', color: 'grey', fontStyle: 'italic'}}>No walks this week :(</Text>
+                }
             </Card>
         </ScrollView>
     </ThemeProvider>

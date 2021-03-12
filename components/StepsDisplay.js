@@ -50,7 +50,7 @@ export default class StepsDisplay extends React.Component {
             },
             error => {
                 this.setState({
-                    pastStepCount: 33,
+                    pastStepCount: 3210,
                 });
                 console.error(error);
             }

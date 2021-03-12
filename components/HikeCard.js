@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         color: 'salmon',
         borderColor: 'salmon',
         borderWidth: 1,
-        borderRadius: 4,
+        borderRadius: 2,
         paddingHorizontal: 8,
         paddingVertical: 4,
         width: 70,
@@ -58,7 +58,7 @@ const diffColor = {
 export default function HikeCard(props) {
 
     // console.log(props);
-    const { navigation } = props;
+    const { navigation, location, errorMsg, placeResponse, finishWalkCallback} = props;
     const { name, miles, terrain, difficulty, modes, photo_url, open_now, types } = props.hike;
     const [timesPressed, setTimesPressed] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
@@ -115,8 +115,9 @@ export default function HikeCard(props) {
                     <Text>Some more in depth description or details can go here</Text>
                     <Text/> 
                     <Button
-                        title="Start Hike"
-                        onPress={() => navigation.navigate('Map')}>
+                        title="Hike It"
+                        onPress={() => finishWalkCallback({place: name, date: new Date().toDateString()})}
+                        >
                     </Button>
                 </Card>
             </BottomSheet>
