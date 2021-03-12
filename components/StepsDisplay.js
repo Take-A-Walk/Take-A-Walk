@@ -6,15 +6,24 @@ import { Pedometer } from 'expo-sensors'
 import firebase from '../Firebase';
 
 export default class StepsDisplay extends React.Component {
-    state = {
-        isPedometerAvailable: 'checking',
-        pastStepCount: 0,
-        currentStepCount: 0,
-        stepGoal: 0
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isPedometerAvailable: 'checking',
+            pastStepCount: 0,
+            currentStepCount: 0,
+            stepGoal: 0
+        };
+    }
+
+
 
     componentDidMount() {
         this._subscribe();
+        // Pass data back to parent
+        this.props.setStepGoal(this.state.stepGoal);
+        this.props.setSteps(this.state.currentStepCount);
     }
     
     componentWillUnmount() {
@@ -44,7 +53,8 @@ export default class StepsDisplay extends React.Component {
         const end = new Date();
         const start = new Date();
         start.setDate(end.getDate() - 1);
-        Pedometer.getStepCountAsync(start, end).then(
+        Pedometer.getStepCountAsync(start, end)
+        .then(
             result => {
                 this.setState({ pastStepCount: result.steps });
             },
@@ -54,7 +64,8 @@ export default class StepsDisplay extends React.Component {
                 });
                 console.error(error);
             }
-        );
+        )
+        .finally(value => this.props.setSteps(this.state.currentStepCount));
 
         const dbRefObj = firebase.database().ref().child('users');
         dbRefObj.on('value', snap => {
@@ -62,6 +73,8 @@ export default class StepsDisplay extends React.Component {
                 this.setState({
                     stepGoal: users[1].DSG
                 })
+                this.props.setStepGoal(users[1].DSG);
+                console.log("Steps Goal: ", users[1].DSG);
             }
         );
     };

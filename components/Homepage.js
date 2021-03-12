@@ -27,11 +27,16 @@ export default function Homepage({navigation}) {
         }
     }
     
+    const [loading, setLoading] = useState("Press refresh")
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [placeResponse, setPlaceResponse] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [pastWalks, setPastWalks] = useState([]);
+    
+    // Stored in Firebase, but we'll have StepsDisplay pass back this info
+    const [steps, setSteps] = useState(null);
+    const [stepGoal, setStepGoal] = useState(null);
 
     const addFinishedWalk = (finished) => {
         setPastWalks([...pastWalks, finished]);
@@ -41,6 +46,7 @@ export default function Homepage({navigation}) {
 
         // delete the current recommendations to reset any state
         setRecommendations(null);
+        setLoading("Refreshing...")
 
         if(placeResponse){
 
@@ -52,6 +58,7 @@ export default function Homepage({navigation}) {
                 let rec = {
                     name:   hike.routes[0].legs[0].end_address.split(',')[0],
                     miles:  hike.routes[0].legs[0].distance.text.split(' ')[0],
+                    meters: hike.routes[0].legs[0].distance.value,
                     terrain: "flat",
                     difficulty: hike.routes[0].legs[0].distance.text.split(' ')[0] > 1.0 ? "medium" : "easy",
                     modes: "👟🚲",
@@ -61,15 +68,37 @@ export default function Homepage({navigation}) {
                     open_now:   hike.place.opening_hours ? hike.place.opening_hours.open_now : true,
                     rating:     hike.place.rating,
                     types:      hike.place.types,
+                    recommended: false,
                 }
                 //console.log(rec.name, hike.place.opening_hours);
                 recs.push(rec);
             }
 
 
-            // TODO:
-            // Movie magic
-            // do some sorting, or somth
+            //
+            // === The Recommendation Magic ===
+            //
+            console.log("Beep boop calculating recommendations")
+            let remaining = 2345; //stepGoal - steps;
+            // Convert to mileage:
+            let milesLeft = remaining / 2211; // avg steps per mile
+            let metersLeft = milesLeft * 1609;
+
+            recs.sort((a,b) => a.meters - b.meters);
+
+            let best_hike_i = 2;
+            let min = 100000;
+            recs.forEach((rec, i) => {
+                // find the hike that best fits the miles left
+                // Not too many, not too few
+                console.log("min", min, best_hike_i);
+                if(Math.abs(rec.meters - metersLeft) < min){
+                    min = Math.abs(rec.meters - metersLeft);
+                    best_hike_i = i;
+                }
+            });
+            recs[best_hike_i].recommended = true;
+            console.log("Best Hike:", recs[best_hike_i])
 
 
             setRecommendations(recs);
@@ -162,7 +191,7 @@ export default function Homepage({navigation}) {
             <Card containerStyle={{alignItems: "center"}}>
                 <Text h1>Irvine, CA</Text>
                 <Text h4 style={{color: 'lightgray', fontWeight: '200'}}>{new Date().toDateString()}</Text>
-                <StepsDisplay goal={6000}/>
+                <StepsDisplay setSteps={setSteps} setStepGoal={setStepGoal}/>
                 <Text/>
                 <Button
                     onPress={() => navigation.navigate('Profile')}
@@ -188,7 +217,7 @@ export default function Homepage({navigation}) {
                         placeResponse={placeResponse}
                         finishWalkCallback={addFinishedWalk}
                     />
-                ) : <Text style={{height: 100, textAlignVertical: 'center', textAlign: 'center', color: 'grey', fontStyle: 'italic'}}>Loading</Text>}
+                ) : <Text style={{height: 100, textAlignVertical: 'center', textAlign: 'center', color: 'grey', fontStyle: 'italic'}}>{loading}</Text>}
                 <Card.Divider/>
                 <Button 
                     onPress={() => navigation.navigate('Map', {location, errorMsg, placeResponse})}
