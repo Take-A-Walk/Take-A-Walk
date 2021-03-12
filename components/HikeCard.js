@@ -5,7 +5,7 @@
  */
 
 import React, {useState} from 'react';
-import { StyleSheet, View, Pressable} from 'react-native';
+import { StyleSheet, View, ScrollView, Pressable} from 'react-native';
 import { Card, Icon, Text, Button, BottomSheet } from 'react-native-elements';
 
 const styles = StyleSheet.create({
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderTopWidth: 0,
         backgroundColor: "linen",
+        elevation: 4,
     },
     mileText: {
         flex: 1,
@@ -36,6 +37,15 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         width: 70,
     },
+    tagText : {
+        fontWeight: 'bold',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginRight: 4,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        color: 'grey',
+    }
   });
 
 const diffColor = {
@@ -95,10 +105,13 @@ export default function HikeCard(props) {
                     <Text h3>{name}</Text>
                     <Text style={{}}><Text style={{backgroundColor: diffColor[difficulty]}}> {difficulty.toUpperCase()} </Text> {terrain} - {timesPressed} - {modes}</Text>
                     <Text/> 
+                    <View style={{ flexDirection: "row"}}>
+                        {types.map(tag =>
+                            <Text style={styles.tagText}>{tag.split('_').join(' ')}</Text>)}
+                    </View>
 
                     <Card.Divider/>
-                    {types.map(tag => 
-                        <Text>{tag}</Text>)}
+
                     <Text>Some more in depth description or details can go here</Text>
                     <Text/> 
                     <Button
