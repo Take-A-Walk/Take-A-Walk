@@ -6,8 +6,6 @@ import * as Location from 'expo-location';
 export default function MapScreen({navigation, route}) {
     // console.log(route.params.name)
     return(
-        <Card>
-            <MapDisplay location={route.params.location} errorMsg={route.params.errorMsg} placeResponse={route.params.placeResponse}/>
-        </Card>
+        <MapDisplay location={route.params.location} errorMsg={route.params.errorMsg} placeResponse={route.params.placeResponse}/>
     );
 }
