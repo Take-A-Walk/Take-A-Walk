@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { View, Text } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 // import './common/index.scss';
@@ -51,40 +51,39 @@ const LoginForm = () => {
     }
 
     return (
-        <Card>
-            <CardSection>
-                <View style={titleView}>
-                    <Text style={titleText}>Take a Walk!</Text>
-                </View>
-            </CardSection>
-            <CardSection>
-                <Input 
-                    label={"Email"}
-                    value={email}
-                    onChangeText={email => setEmail(email)}
-                    placeholder={"example@email.com"}
-                    pwObstruct={false}
-                />
-            </CardSection>
-
-            <CardSection>
-                <Input
-                    label="Password"
-                    placeholder="Password"
-                    value={password}
-                    onChangeText={password => setPassword(password)}
-                    pwObstruct={true}
-                />
-            </CardSection>
-
-            <Text style={errorStyle}>
-                {error}
-            </Text>
-
-            <CardSection>
-                {renderBtn()}
-            </CardSection>
-        </Card>
+        <ScrollView>
+            <Card>
+                <CardSection>
+                    <View style={titleView}>
+                        <Text style={titleText}>Take a Walk!</Text>
+                    </View>
+                </CardSection>
+                <CardSection>
+                    <Input
+                        label={"Email"}
+                        value={email}
+                        onChangeText={email => setEmail(email)}
+                        placeholder={"example@email.com"}
+                        pwObstruct={false}
+                    />
+                </CardSection>
+                <CardSection>
+                    <Input
+                        label="Password"
+                        placeholder="Password"
+                        value={password}
+                        onChangeText={password => setPassword(password)}
+                        pwObstruct={true}
+                    />
+                </CardSection>
+                <Text style={errorStyle}>
+                    {error}
+                </Text>
+                <CardSection>
+                    {renderBtn()}
+                </CardSection>
+            </Card>
+        </ScrollView>
     );
 };
 

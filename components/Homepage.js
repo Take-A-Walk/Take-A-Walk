@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { ThemeProvider, Card, Icon, Text, Button } from 'react-native-elements';
 import * as Location from 'expo-location';
 
 import StepsDisplay from './StepsDisplay';
 import HikeCard from './HikeCard';
-import MapDisplay from './MapDisplay';
 
 export default function Homepage({navigation}) {
     const theme = {
@@ -63,6 +62,10 @@ export default function Homepage({navigation}) {
 
 
     const refreshRecommendations = async () => {
+
+        // delete the current recommendations to reset any state
+        setRecommendations(null);
+
         if(placeResponse){
 
             let hikes = await getDirections(placeResponse.slice(0,3));
@@ -74,9 +77,16 @@ export default function Homepage({navigation}) {
                     name:   hike.routes[0].legs[0].end_address.split(',')[0],
                     miles:  hike.routes[0].legs[0].distance.text.split(' ')[0],
                     terrain: "flat",
-                    difficulty: "easy",
+                    difficulty: hike.routes[0].legs[0].distance.text.split(' ')[0] > 1.0 ? "medium" : "easy",
                     modes: "👟🚲",
+                    photo_url:  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + 
+                                hike.place.photos[0].photo_reference + 
+                                "&key=AIzaSyB0Ckjw0mGcuaUHHTIyx6FW_zqygm-ZIBM",
+                    open_now:   hike.place.opening_hours.open_now,
+                    rating:     hike.place.rating,
+                    types:      hike.place.types,
                 }
+                // console.log(rec.name, hike.place.types);
                 recs.push(rec);
             }
 
@@ -113,7 +123,9 @@ export default function Homepage({navigation}) {
 
             let response = await fetch(direction_url);
             let directions = await response.json();
-
+            
+            // append the place in case we need it
+            directions.place = place;
             results.push(directions);
         }
 
@@ -144,7 +156,7 @@ export default function Homepage({navigation}) {
         fetch(url)
             .then(res => res.json())
             .then(data => {
-                console.log('in here');
+                console.log('Fetching places...');
                 //   console.log(data);
                 setPlaceResponse(data.results);
             })
@@ -189,17 +201,13 @@ export default function Homepage({navigation}) {
                     <Icon size={48} name="refresh" type='fontawesome' color="black" reverseColor="black" onPress={()=>refreshRecommendations()}/>
                 </Card.Title>
                 <Card.Divider/>
-                {recommendations ?
-                recommendations.map(hike => 
+                {recommendations && placeResponse ?
+                recommendations.map((hike, index) => 
                     <HikeCard
-                        key={hike.name}
-                        name={hike.name}
-                        miles={hike.miles}
-                        terrain={hike.terrain}
-                        difficulty={hike.difficulty}
-                        modes={hike.modes}
+                        key={index}
+                        hike={hike}
                     />
-                ) : <Text>No recommendations available. Try refreshing</Text>}
+                ) : <Text style={{height: 100, textAlignVertical: 'center', color: 'grey', fontStyle: 'italic'}}>Loading</Text>}
                 <Card.Divider/>
                 <Button 
                     onPress={() => navigation.navigate('Map', {location, errorMsg, placeResponse})}

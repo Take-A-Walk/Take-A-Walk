@@ -14,7 +14,7 @@
     "@react-navigation/stack": "^5.14.2",
     "dotenv": "^8.2.0",
     "expo": "~40.0.0",
-    "expo-cli": "^4.1.6",
+    "expo-cli": "^4.3.0",
     "expo-image-picker": "~9.2.0",
     "expo-location": "~10.0.0",
     "expo-sensors": "^10.0.0",
